@@ -129,4 +129,4 @@ const renderApp = () => {
   }
 };
 
-goToPage(ADD_POSTS_PAGE);
+goToPage(POSTS_PAGE);
