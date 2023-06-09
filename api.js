@@ -68,3 +68,23 @@ export function uploadImage({ file }) {
     return response.json();
   });
 }
+
+// Добавление нового поста
+export function addPost({ token, description, imageUrl}) {
+  return fetch(postsHost, {
+    method: 'POST',
+    body: JSON.stringify({
+      description,
+      imageUrl,
+    }),
+    headers: {
+      Authorization: token,
+    }
+  }).then((res) => {
+    if (res.status === 201) {
+      res.json()
+    } else if (res.status === 400) {
+      throw new Error('Нет описания или картинки')
+    } 
+  })
+};

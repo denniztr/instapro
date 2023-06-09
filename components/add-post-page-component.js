@@ -1,6 +1,12 @@
 import { renderHeaderComponent } from "./header-component.js";
+import { renderUploadImageComponent } from "./upload-image-component.js";
+import { addPost } from "../api.js";
+import { getToken } from "../index.js";
 
 export function renderAddPostPageComponent({ appEl, onAddPostClick }) {
+
+  let imageUrl = '';
+
   const render = () => {
     // TODO: Реализовать страницу добавления поста
     const appHtml = `
@@ -30,14 +36,32 @@ export function renderAddPostPageComponent({ appEl, onAddPostClick }) {
     renderHeaderComponent({ //Рендер шапки страницы
       element: document.querySelector(".header-container"), 
     });
+    renderUploadImageComponent({
+      element: appEl.querySelector(".upload-image-container"),
+      onImageUrlChange(newImageUrl) {
+        imageUrl = newImageUrl;
+      },
+    });
+    
 
     document.getElementById("add-button").addEventListener("click", () => {
-      onAddPostClick({
-        description: "Описание картинки",
-        imageUrl: "https://image.png",
+
+      const inputValidation = document.getElementById("input_description").value.replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+
+      if (inputValidation === '') {
+        alert('Заполните поле описания фотографии')
+      } 
+      if (imageUrl === '') {
+        alert('Выберите фотографию')
+      }
+
+      addPost({
+        token: getToken(),
+        description: inputValidation,
+        imageUrl: imageUrl,
       });
+      onAddPostClick();
     });
   };
-
   render();
-}
+};
