@@ -88,3 +88,39 @@ export function addPost({ token, description, imageUrl}) {
     } 
   })
 };
+
+// Получаем список постов конкретного пользователя
+export function getUserPosts({ id, token }) {
+  return fetch(postsHost + `/user-posts/${id}`, {
+    method: 'GET',
+    headers: { 
+      Authorization: token,
+    },
+  })
+  .then((res) => res.json())
+  .then((data) => {
+    return data.posts;
+  })
+};
+
+
+// Удаление поста (ещё не работает)
+export function deletePost({ token, id}) {
+  return fetch(postsHost + '/' + id, {
+    method: 'DELETE',
+    headers: {
+      Authorization: token,
+    }
+  }).then((res) => {
+
+    if (res.status === 200) {
+      res.json();
+    } else if (res.status === 401) {
+      throw new Error('Нет авторизации')
+    } else {
+      alert('Ошибка при удалении (доработать)')
+      throw new Error('Вы можете удалить только свой пост')
+    }
+
+  })
+};
