@@ -15,10 +15,10 @@ export function getPosts({ token }) {
       if (response.status === 401) {
         throw new Error("Нет авторизации");
       }
-
       return response.json();
     })
     .then((data) => {
+      console.log(data);
       return data.posts;
     });
 }
@@ -103,7 +103,6 @@ export function getUserPosts({ id, token }) {
   })
 };
 
-
 // Удаление поста
 export function deletePost({ id, token }) {
   return fetch(postsHost + `/${id}`, {
@@ -124,3 +123,37 @@ export function deletePost({ id, token }) {
 
   })
 };
+
+// Ставим лайк
+export function likeFetchFunc({ id, token }) {
+  return fetch(postsHost + `/${id}/like`, {
+    method: 'POST',
+    headers: {
+      Authorization: token,
+    }
+  })
+  .then((res) => {
+    if (res.status === 401) {
+      throw new Error('Авторизуйтесь чтобы поставить лайк')
+    }
+
+    res.json()
+  })
+};
+
+// Убираем лайк
+export function dislikeFetchFunc({ id, token }) {
+  return fetch(postsHost + `/${id}/dislike`, {
+    method: 'POST',
+    headers: {
+      Authorization: token,
+    }
+  })
+  .then((res) => {
+    if (res.status === 401) {
+      throw new Error('Авторизуйтесь чтобы убрать лайк')
+    }
+
+    return res.json()
+  })
+}

@@ -1,10 +1,34 @@
-import { USER_POSTS_PAGE } from "../routes.js";
+import { POSTS_PAGE, USER_POSTS_PAGE } from "../routes.js";
 import { renderHeaderComponent } from "./header-component.js";
 import { posts, goToPage, userPosts } from "../index.js";
-import { deletePost } from "../api.js";
+import { deletePost, dislikeFetchFunc, likeFetchFunc } from "../api.js";
 import { getToken } from "../index.js";
 
-export function renderPostsPageComponent({ appEl }) {
+
+function likesFunc(token, page, data) {
+  const likeButtons = document.querySelectorAll('.like-button');
+  
+  for (const likeButton of likeButtons) {
+    likeButton.addEventListener('click', () => {
+      let id = likeButton.dataset.postId;
+        if (likeButton.dataset.liked == 'false') {
+        likeFetchFunc({ id, token: getToken() }).then(() => {
+          goToPage(page, data)
+        }).catch((error) => {
+          alert(error.message)
+        })
+      } else {
+        dislikeFetchFunc({ id, token: getToken() }).then(() => {
+          goToPage(page, data)
+        }).catch((error) => {
+          alert(error.message)
+        })
+      }
+    });
+  }
+}
+
+export function renderPostsPageComponent({ appEl, token }) {
   console.log("Актуальный список постов:", posts);
   /**
    * TODO: чтобы отформатировать дату создания поста в виде "19 минут назад"
@@ -23,11 +47,17 @@ export function renderPostsPageComponent({ appEl }) {
                     <img class="post-image" src=${post.imageUrl}>
                   </div>
                   <div class="post-likes">
-                    <button data-post-id="642cffed9b190443860c2f30" class="like-button">
-                      <img src="./assets/images/like-not-active.svg">
-                    </button>
+                    <button data-post-id="${post.id}" data-liked="${post.isLiked}" class="like-button">
+                      ${post.isLiked ? 
+                        `<img src="./assets/images/like-active.svg">` 
+                        : `<img src="./assets/images/like-not-active.svg">`}
+                      </button>
                     <p class="post-likes-text">
-                      Нравится: <strong>35(Ещё не работает)</strong>
+                      Нравится: <strong>
+
+                      ${post.likes.length === 0 ? 0 : post.likes[post.likes.length - 1].name + ((post.likes.length > 1) ? " и еще " + (post.likes.length - 1) : "")}
+
+                      </strong>
                     </p>
                   </div>
                   <p class="post-text">
@@ -62,10 +92,14 @@ export function renderPostsPageComponent({ appEl }) {
       });
     });
   }
-}
+  
+  const page = POSTS_PAGE;
+
+  likesFunc(token, page)
+};
 
 
-export function renderUserPostComponent({ appEl, user }) {
+export function renderUserPostComponent({ appEl, token, user }) {
   let userPostsHtml = userPosts.map((post) => { 
     return `  <li class="post">
               <div class="post-header" data-user-id="${post.user.id}">
@@ -78,11 +112,16 @@ export function renderUserPostComponent({ appEl, user }) {
                 <img class="post-image" src=${post.imageUrl}>
               </div>
               <div class="post-likes">
-                <button data-post-id="642cffed9b190443860c2f30" class="like-button">
-                  <img src="./assets/images/like-not-active.svg">
-                </button>
+              <button data-post-id="${post.id}" data-liked="${post.isLiked}" class="like-button">
+              ${post.isLiked ? 
+                `<img src="./assets/images/like-active.svg">` 
+                : `<img src="./assets/images/like-not-active.svg">`}
+              </button>
                 <p class="post-likes-text">
-                  Нравится: <strong>35(Ещё не работает)</strong>
+                  Нравится: <strong>
+                  ${post.likes.length === 0 ? 0 : post.likes[post.likes.length - 1].name + ((post.likes.length > 1) ? " и еще " + (post.likes.length - 1) : "")}
+                      
+                  </strong>
                 </p>
               </div>
               <p class="post-text">
@@ -91,7 +130,7 @@ export function renderUserPostComponent({ appEl, user }) {
               </p>
               <p class="post-date">
                 3 часа назад (Ещё не работает)
-                ${user?._id == post.user.id ? `<button class="delete-button" data-post-id="${post.id}" >Удалить</button>` : ``}
+                ${user?._id == post.user.id ? `<button class="delete-button" data-post-id="${post.id}">Удалить</button>` : ``}
               </p>
             </li>`;
   }).join('');
@@ -102,12 +141,6 @@ export function renderUserPostComponent({ appEl, user }) {
   const appHtml = `
             <div class="page-container">
               <div class="header-container"></div>
-                <div class="posts-user-header">
-                  <p>Посты пользователя: </p>
-                <p style="font-size: 14px;" class="posts-user-header__user-name">${userName}</p>
-                <img style="width: 40px; height: 40px;" src="${userImage}" class="posts-user-header__user-image">
-                ДОРАБОТАТЬ
-              </div>
               <ul class="posts">
                 ${userPostsHtml}
               </ul>
@@ -120,10 +153,14 @@ export function renderUserPostComponent({ appEl, user }) {
         element: document.querySelector(".header-container"),
       });
 
+      const page = USER_POSTS_PAGE;
+
       let data = {
         userId: userPosts[0]?.user.id,
         notIsLoad: true
       }
+
+      likesFunc(token, page, data)
 
       let deleteButtons = document.querySelectorAll('.delete-button');
       for (const deleteButton of deleteButtons) {
