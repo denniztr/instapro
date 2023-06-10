@@ -104,9 +104,9 @@ export function getUserPosts({ id, token }) {
 };
 
 
-// Удаление поста (ещё не работает)
-export function deletePost({ token, id}) {
-  return fetch(postsHost + '/' + id, {
+// Удаление поста
+export function deletePost({ id, token }) {
+  return fetch(postsHost + `/${id}`, {
     method: 'DELETE',
     headers: {
       Authorization: token,
