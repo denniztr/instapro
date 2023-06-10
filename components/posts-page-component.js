@@ -1,10 +1,10 @@
 import { USER_POSTS_PAGE } from "../routes.js";
 import { renderHeaderComponent } from "./header-component.js";
 import { posts, goToPage, userPosts } from "../index.js";
-
+import { deletePost } from "../api.js";
+import { getToken } from "../index.js";
 
 export function renderPostsPageComponent({ appEl }) {
-  // TODO: реализовать рендер постов из api
   console.log("Актуальный список постов:", posts);
   /**
    * TODO: чтобы отформатировать дату создания поста в виде "19 минут назад"
@@ -65,7 +65,7 @@ export function renderPostsPageComponent({ appEl }) {
 }
 
 
-export function renderUserPostComponent({ appEl }) {
+export function renderUserPostComponent({ appEl, user }) {
   let userPostsHtml = userPosts.map((post) => { 
     return `  <li class="post">
               <div class="post-header" data-user-id="${post.user.id}">
@@ -91,15 +91,23 @@ export function renderUserPostComponent({ appEl }) {
               </p>
               <p class="post-date">
                 3 часа назад (Ещё не работает)
+                ${user?._id == post.user.id ? `<button class="delete-button" data-post-id="${post.id}" >Удалить</button>` : ``}
               </p>
             </li>`;
   }).join('');
 
+  let userName = userPosts[0]?.user.name;
+  let userImage = userPosts[0]?.user.imageUrl;
 
   const appHtml = `
             <div class="page-container">
               <div class="header-container"></div>
-
+                <div class="posts-user-header">
+                  <p>Посты пользователя: </p>
+                <p style="font-size: 14px;" class="posts-user-header__user-name">${userName}</p>
+                <img style="width: 40px; height: 40px;" src="${userImage}" class="posts-user-header__user-image">
+                ДОРАБОТАТЬ
+              </div>
               <ul class="posts">
                 ${userPostsHtml}
               </ul>
@@ -112,5 +120,22 @@ export function renderUserPostComponent({ appEl }) {
         element: document.querySelector(".header-container"),
       });
 
+      let data = {
+        userId: userPosts[0]?.user.id,
+        notIsLoad: true
+      }
 
+      let deleteButtons = document.querySelectorAll('.delete-button');
+      for (const deleteButton of deleteButtons) {
+        let id = deleteButton.dataset.postId;
+        deleteButton.addEventListener('click', () => {
+          deletePost({
+            id,
+            token: getToken(),
+          }).then(() => {
+            console.log('Запись успешно удалена')
+            goToPage(USER_POSTS_PAGE, data);
+          })
+        })
+      }
 }

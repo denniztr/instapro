@@ -83,9 +83,6 @@ export const goToPage = (newPage, data) => {
         userPosts = data;
         renderApp();
       })
-      // page = USER_POSTS_PAGE;
-      // posts = [];
-      // return renderApp();
     }
 
     page = newPage;
@@ -137,12 +134,8 @@ const renderApp = () => {
   }
 
   if (page === USER_POSTS_PAGE) {
-    // // TODO: реализовать страницу фотографию пользвателя
-    // appEl.innerHTML = "Здесь будет страница фотографий пользователя";
-    // return;
     return renderUserPostComponent({
       appEl,
-    // token: getToken(),
       user: getUserFromLocalStorage(),
     })
   }
