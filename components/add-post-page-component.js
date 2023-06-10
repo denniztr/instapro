@@ -33,7 +33,7 @@ export function renderAddPostPageComponent({ appEl, onAddPostClick }) {
 
     appEl.innerHTML = appHtml;
     
-    renderHeaderComponent({ //Рендер шапки страницы
+    renderHeaderComponent({ 
       element: document.querySelector(".header-container"), 
     });
     renderUploadImageComponent({
