@@ -36,48 +36,42 @@ export function renderPostsPageComponent({ appEl, token }) {
    */
 
   const postsHtml = posts.map((post) => {
-    return `      <li class="post">
-                  <div class="post-header" data-user-id="${post.user.id}">
+        return `  <li class="post">
+                    <div class="post-header" data-user-id="${post.user.id}">
                       <img src=${post.user.imageUrl} class="post-header__user-image">
                       <p class="post-header__user-name">${post.user.name}.</p>
-                  </div>
-                
-                
-                  <div class="post-image-container">
-                    <img class="post-image" src=${post.imageUrl}>
-                  </div>
-                  <div class="post-likes">
-                    <button data-post-id="${post.id}" data-liked="${post.isLiked}" class="like-button">
-                      ${post.isLiked ? 
-                        `<img src="./assets/images/like-active.svg">` 
-                        : `<img src="./assets/images/like-not-active.svg">`}
+                    </div>
+                    <div class="post-image-container">
+                      <img class="post-image" src=${post.imageUrl}>
+                    </div>
+                    <div class="post-likes">
+                      <button data-post-id="${post.id}" data-liked="${post.isLiked}" class="like-button">
+                        ${post.isLiked ? `<img src="./assets/images/like-active.svg">` : `<img src="./assets/images/like-not-active.svg">`}
                       </button>
-                    <p class="post-likes-text">
-                      Нравится: <strong>
-
-                      ${post.likes.length === 0 ? 0 : post.likes[post.likes.length - 1].name + ((post.likes.length > 1) ? " и еще " + (post.likes.length - 1) : "")}
-
-                      </strong>
+                      <p class="post-likes-text">Нравится: 
+                        <strong>  ${ post.likes.length === 0 
+                          ? 0 
+                          : post.likes[post.likes.length - 1].name + ((post.likes.length > 1) ? ' и ещё ' + (post.likes.length - 1) : '') }
+                        </strong>
+                      </p>
+                    </div>
+                    <p class="post-text">
+                      <span class="user-name">${post.user.name}</span>
+                      ${post.description}
                     </p>
-                  </div>
-                  <p class="post-text">
-                    <span class="user-name">${post.user.name}</span>
-                    ${post.description}
-                  </p>
-                  <p class="post-date">
-                    3 часа назад (Ещё не работает)
-                  </p>
-                </li>`;
+                    <p class="post-date">
+                      3 часа назад (Ещё не работает)
+                    </p>
+                  </li>`;
   }).join('');
                   
 
-  const appHtml = `
-              <div class="page-container">
-                <div class="header-container"></div>
-                <ul class="posts">
-                  ${postsHtml}
-                </ul>
-              </div>`;
+  const appHtml = ` <div class="page-container">
+                      <div class="header-container"></div>
+                        <ul class="posts">
+                          ${postsHtml}
+                        </ul>
+                    </div>`;
 
   appEl.innerHTML = appHtml;
 
@@ -101,38 +95,34 @@ export function renderPostsPageComponent({ appEl, token }) {
 
 export function renderUserPostComponent({ appEl, token, user }) {
   let userPostsHtml = userPosts.map((post) => { 
-    return `  <li class="post">
-              <div class="post-header" data-user-id="${post.user.id}">
-                  <img src=${post.user.imageUrl} class="post-header__user-image">
-                  <p class="post-header__user-name">${post.user.name}.</p>
-              </div>
-            
-            
-              <div class="post-image-container">
-                <img class="post-image" src=${post.imageUrl}>
-              </div>
-              <div class="post-likes">
-              <button data-post-id="${post.id}" data-liked="${post.isLiked}" class="like-button">
-              ${post.isLiked ? 
-                `<img src="./assets/images/like-active.svg">` 
-                : `<img src="./assets/images/like-not-active.svg">`}
-              </button>
-                <p class="post-likes-text">
-                  Нравится: <strong>
-                  ${post.likes.length === 0 ? 0 : post.likes[post.likes.length - 1].name + ((post.likes.length > 1) ? " и еще " + (post.likes.length - 1) : "")}
-                      
-                  </strong>
-                </p>
-              </div>
-              <p class="post-text">
-                <span class="user-name">${post.user.name}</span>
-                ${post.description}
-              </p>
-              <p class="post-date">
-                3 часа назад (Ещё не работает)
-                ${user?._id == post.user.id ? `<button class="delete-button" data-post-id="${post.id}">Удалить</button>` : ``}
-              </p>
-            </li>`;
+        return `  <li class="post">
+                    <div class="post-header" data-user-id="${post.user.id}">
+                      <img src=${post.user.imageUrl} class="post-header__user-image">
+                      <p class="post-header__user-name">${post.user.name}.</p>
+                    </div>
+                    <div class="post-image-container">
+                      <img class="post-image" src=${post.imageUrl}>
+                    </div>
+                    <div class="post-likes">
+                      <button data-post-id="${post.id}" data-liked="${post.isLiked}" class="like-button">
+                        ${post.isLiked ? `<img src="./assets/images/like-active.svg">` : `<img src="./assets/images/like-not-active.svg">`}
+                      </button>
+                      <p class="post-likes-text">Нравится: 
+                        <strong>  ${post.likes.length === 0 
+                          ? 0 
+                          : post.likes[post.likes.length - 1].name + ((post.likes.length > 1) ? " и еще " + (post.likes.length - 1) : "")}
+                        </strong>
+                      </p>
+                    </div>
+                    <p class="post-text">
+                      <span class="user-name">${post.user.name}</span>
+                      ${post.description}
+                    </p>
+                    <p class="post-date">
+                      3 часа назад (Ещё не работает)
+                      ${user?._id == post.user.id ? `<button class="delete-button" data-post-id="${post.id}">Удалить</button>` : ``}
+                    </p>
+                  </li>`;
   }).join('');
 
   const appHtml = `

@@ -1,5 +1,3 @@
-// Замени на свой, чтобы получить независимый от других набор данных.
-// "боевая" версия инстапро лежит в ключе prod
 const personalKey = "denniztr";
 const baseHost = "https://webdev-hw-api.vercel.app";
 const postsHost = `${baseHost}/api/v1/${personalKey}/instapro`;
@@ -23,7 +21,6 @@ export function getPosts({ token }) {
     });
 }
 
-// https://github.com/GlebkaF/webdev-hw-api/blob/main/pages/api/user/README.md#%D0%B0%D0%B2%D1%82%D0%BE%D1%80%D0%B8%D0%B7%D0%BE%D0%B2%D0%B0%D1%82%D1%8C%D1%81%D1%8F
 export function registerUser({ login, password, name, imageUrl }) {
   return fetch(baseHost + "/api/user", {
     method: "POST",
@@ -56,7 +53,7 @@ export function loginUser({ login, password }) {
   });
 }
 
-// Загружает картинку в облако, возвращает url загруженной картинки
+
 export function uploadImage({ file }) {
   const data = new FormData();
   data.append("file", file);
@@ -69,7 +66,7 @@ export function uploadImage({ file }) {
   });
 }
 
-// Добавление нового поста
+
 export function addPost({ token, description, imageUrl}) {
   return fetch(postsHost, {
     method: 'POST',
@@ -89,7 +86,7 @@ export function addPost({ token, description, imageUrl}) {
   })
 };
 
-// Получаем список постов конкретного пользователя
+
 export function getUserPosts({ id, token }) {
   return fetch(postsHost + `/user-posts/${id}`, {
     method: 'GET',
@@ -103,7 +100,7 @@ export function getUserPosts({ id, token }) {
   })
 };
 
-// Удаление поста
+
 export function deletePost({ id, token }) {
   return fetch(postsHost + `/${id}`, {
     method: 'DELETE',
@@ -120,11 +117,10 @@ export function deletePost({ id, token }) {
       alert('Ошибка при удалении (доработать)')
       throw new Error('Вы можете удалить только свой пост')
     }
-
   })
 };
 
-// Ставим лайк
+
 export function likeFetchFunc({ id, token }) {
   return fetch(postsHost + `/${id}/like`, {
     method: 'POST',
@@ -136,12 +132,11 @@ export function likeFetchFunc({ id, token }) {
     if (res.status === 401) {
       throw new Error('Авторизуйтесь чтобы поставить лайк')
     }
-
     res.json()
   })
 };
 
-// Убираем лайк
+
 export function dislikeFetchFunc({ id, token }) {
   return fetch(postsHost + `/${id}/dislike`, {
     method: 'POST',
@@ -153,7 +148,6 @@ export function dislikeFetchFunc({ id, token }) {
     if (res.status === 401) {
       throw new Error('Авторизуйтесь чтобы убрать лайк')
     }
-
     return res.json()
   })
-}
+};
