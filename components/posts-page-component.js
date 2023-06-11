@@ -3,7 +3,8 @@ import { renderHeaderComponent } from "./header-component.js";
 import { posts, goToPage, userPosts } from "../index.js";
 import { deletePost, dislikeFetchFunc, likeFetchFunc } from "../api.js";
 import { getToken } from "../index.js";
-
+import { formatDistance } from 'date-fns'
+import { ru } from 'date-fns/locale'
 
 function likesFunc(token, page, data) {
   const likeButtons = document.querySelectorAll('.like-button');
@@ -60,7 +61,8 @@ export function renderPostsPageComponent({ appEl, token }) {
                       ${post.description}
                     </p>
                     <p class="post-date">
-                      3 часа назад (Ещё не работает)
+                      ${formatDistance(new Date(post.createdAt), Date.now(), {locale: ru})}
+                      назад
                     </p>
                   </li>`;
   }).join('');
@@ -119,7 +121,7 @@ export function renderUserPostComponent({ appEl, token, user }) {
                       ${post.description}
                     </p>
                     <p class="post-date">
-                      3 часа назад (Ещё не работает)
+                      ${formatDistance(new Date(post.createdAt), Date.now())}
                       ${user?._id == post.user.id ? `<button class="delete-button" data-post-id="${post.id}">Удалить</button>` : ``}
                     </p>
                   </li>`;
