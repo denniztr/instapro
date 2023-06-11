@@ -121,7 +121,7 @@ export function renderUserPostComponent({ appEl, token, user }) {
                       ${post.description}
                     </p>
                     <p class="post-date">
-                      ${formatDistance(new Date(post.createdAt), Date.now())}
+                      ${formatDistance(new Date(post.createdAt), Date.now(), {locale: ru})}
                       ${user?._id == post.user.id ? `<button class="delete-button" data-post-id="${post.id}">Удалить</button>` : ``}
                     </p>
                   </li>`;
