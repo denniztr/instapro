@@ -95,7 +95,7 @@ export function renderPostsPageComponent({ appEl, token }) {
   
   const page = POSTS_PAGE;
 
-  likesFunc(token, page)
+  likesFunc(token, page, { notIsLoad: true })
 };
 
 
@@ -134,9 +134,6 @@ export function renderUserPostComponent({ appEl, token, user }) {
               </p>
             </li>`;
   }).join('');
-
-  let userName = userPosts[0]?.user.name;
-  let userImage = userPosts[0]?.user.imageUrl;
 
   const appHtml = `
             <div class="page-container">

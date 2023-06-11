@@ -52,8 +52,10 @@ export const goToPage = (newPage, data) => {
     }
 
     if (newPage === POSTS_PAGE) {
-      page = LOADING_PAGE;
-      renderApp();
+      if (!data?.notIsLoad) {
+        page = LOADING_PAGE;
+        renderApp();
+      }
 
       return getPosts({ token: getToken() })
         .then((newPosts) => {
@@ -68,7 +70,6 @@ export const goToPage = (newPage, data) => {
     }
 
     if (newPage === USER_POSTS_PAGE) {
-      // TODO: реализовать получение постов юзера из API
       if (!data?.notIsLoad) {
         page = LOADING_PAGE;
         renderApp();
