@@ -121,8 +121,14 @@ export function renderUserPostComponent({ appEl, token, user }) {
                       ${post.description}
                     </p>
                     <p class="post-date">
-                      ${formatDistance(new Date(post.createdAt), Date.now(), {locale: ru})}
-                      ${user?._id == post.user.id ? `<button class="delete-button" data-post-id="${post.id}">Удалить</button>` : ``}
+                    <p class="post-date" style="display: flex; justify-content: space-between;">
+                      ${formatDistance(new Date(post.createdAt), Date.now(), {locale: ru})} 
+                      назад
+                      ${user?._id == post.user.id ? `<button class="delete-button" data-post-id="${post.id}">
+                      <span class="material-symbols-outlined">
+                      delete_forever
+                      </span></button>` : ``}
+                    </p>
                     </p>
                   </li>`;
   }).join('');
