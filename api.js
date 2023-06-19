@@ -16,7 +16,6 @@ export function getPosts({ token }) {
       return response.json();
     })
     .then((data) => {
-      console.log(data);
       return data.posts;
     });
 }
