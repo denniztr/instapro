@@ -30,12 +30,6 @@ function likesFunc(token, page, data) {
 }
 
 export function renderPostsPageComponent({ appEl, token }) {
-  console.log("Актуальный список постов:", posts);
-  /**
-   * TODO: чтобы отформатировать дату создания поста в виде "19 минут назад"
-   * можно использовать https://date-fns.org/v2.29.3/docs/formatDistanceToNow
-   */
-
   const postsHtml = posts.map((post) => {
         return `  <li class="post">
                     <div class="post-header" data-user-id="${post.user.id}">

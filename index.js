@@ -74,7 +74,7 @@ export const goToPage = (newPage, data) => {
         renderApp();
       }
 
-      console.log("Открываю страницу пользователя: ", data.userId);
+     
       let id = data.userId;
 
       return getUserPosts({ id, token:getToken() })
