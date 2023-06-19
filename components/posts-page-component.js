@@ -40,7 +40,7 @@ export function renderPostsPageComponent({ appEl, token }) {
         return `  <li class="post">
                     <div class="post-header" data-user-id="${post.user.id}">
                       <img src=${post.user.imageUrl} class="post-header__user-image">
-                      <p class="post-header__user-name">${post.user.name}.</p>
+                      <p class="post-header__user-name">${post.user.name}</p>
                     </div>
                     <div class="post-image-container">
                       <img class="post-image" src=${post.imageUrl}>
@@ -100,7 +100,7 @@ export function renderUserPostComponent({ appEl, token, user }) {
         return `  <li class="post">
                     <div class="post-header" data-user-id="${post.user.id}">
                       <img src=${post.user.imageUrl} class="post-header__user-image">
-                      <p class="post-header__user-name">${post.user.name}.</p>
+                      <p class="post-header__user-name">${post.user.name}</p>
                     </div>
                     <div class="post-image-container">
                       <img class="post-image" src=${post.imageUrl}>
