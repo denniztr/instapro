@@ -12,5 +12,4 @@ https://denniztr.github.io/instapro/
 
 ## Фактически затраченное время
 
-YYYY часов
-
+ХХХХ часов
